@@ -1,7 +1,6 @@
 "use client"
 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import Autoplay from 'embla-carousel-autoplay';
 import { ArrowRight } from 'lucide-react';
 import React, { useState } from 'react'
 
@@ -49,17 +48,17 @@ function Spotlight() {
                   <article
                     className="relative flex min-h-[70svh] sm:min-h-[calc(100svh-50px)] w-full overflow-hidden"
                   >
-                    <div className="absolute inset-0 flex items-center justify-center bg-[var(--art-surface-dark)]">
+                    <div className="absolute inset-0 flex items-center justify-center bg-(--art-surface-dark)">
                       <img
                         src={slide.image}
                         alt={slide.eyebrow}
                         className={`h-full w-full object-cover`}
                       />
                     </div>
-                    <div className="absolute inset-0 bg-linear-to-b from-(--art-overlay-black-30) via-(--art-overlay-black-30) to-(--art-overlay-black-80)" />
+                    <div className="absolute inset-0 z-10 bg-linear-to-b from-black/60 via-transparent to-black"></div>
 
-                    <div className="absolute bottom-2 left-2 md:bottom-10 md:left-10 max-w-105 justify-self-end rounded-xl p-4">
-                      <h2 className="text-3xl font-bold leading-12 text-[var(--art-text-white-78)]">
+                    <div className="absolute z-20 px-[5%] bottom-6 md:bottom-10 max-w-[90%] md:max-w-1/2">
+                      <h2 className="text-3xl font-bold leading-9 mb-3 text-[var(--art-text-white-78)]">
                         {slide.eyebrow}
                       </h2>
                       <p className="text-base font-normal leading-5 text-[var(--art-text-white-50)]">

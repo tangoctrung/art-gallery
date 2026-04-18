@@ -43,8 +43,8 @@ function Header() {
 
   return (
     <>
-      <header className={`sticky top-0 z-50 w-full ${isScroll ? "bg-[var(--art-overlay-header)] backdrop-blur-2xl" : "bg-[var(--art-surface-dark)]"}`}>
-        <div className="mx-auto flex max-w-480 items-center gap-10 px-4 py-3 lg:px-8">
+      <header className={`sticky top-0 z-50 w-full px-[5%] ${isScroll ? "bg-(--art-overlay-header) backdrop-blur-2xl" : "bg-(--art-surface-dark)"}`}>
+        <div className="mx-auto flex max-w-480 items-center gap-10 py-3">
           <a
             href="/"
             aria-label="ArtGallery"

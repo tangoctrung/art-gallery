@@ -1,12 +1,14 @@
 "use client"
 
-import { Check, ChevronDown, Globe } from 'lucide-react'
+import { Check, ChevronDown, Flag, Globe } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
+import { FlagVn } from '../icons/flag-vn'
+import { FlagEn } from '../icons/flag-en'
 
 
 const LANGUAGES = [
-  { code: "vi", label: "VI", shortLabel: "VI", flag: "🇻🇳" },
-  { code: "en", label: "EN", shortLabel: "EN", flag: "🇬🇧" },
+  { code: "vi", label: "VI", shortLabel: "VI", flag: <FlagVn width={20} height={16} /> },
+  { code: "en", label: "EN", shortLabel: "EN", flag: <FlagEn width={20} height={16} /> },
 ] as const
 
 function DropdownLanguages() {

@@ -1,5 +1,7 @@
 import React from 'react'
 import Header from './header'
+import Footer from './footer';
+import FloatButton from './float-button';
 
 function LayoutMain({
   children,
@@ -12,6 +14,8 @@ function LayoutMain({
       <div>
         {children}
       </div>
+      <FloatButton />
+      <Footer />
     </article>
   )
 }
