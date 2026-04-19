@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link";
 import {
   startTransition,
   useDeferredValue,
@@ -291,28 +292,30 @@ function PaintingOfCategory() {
           {filteredArtworks.map((artwork, index) => (
             <article
               key={`${artwork.title}-${artwork.artist}-${index}`}
-              className="group relative mb-4 break-inside-avoid overflow-hidden rounded-lg bg-black"
+              className="group relative mb-4 overflow-hidden rounded-lg bg-black break-inside-avoid"
             >
-              <img
-                src={artwork.image}
-                alt={`${artwork.title} by ${artwork.artist}`}
-                loading="lazy"
-                className="h-auto w-full transition duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-linear-to-b from-[var(--art-overlay-black-05)] via-[var(--art-overlay-black-20)] to-[var(--art-overlay-black-75)]" />
-              <div className="absolute inset-0 flex flex-col justify-end p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:p-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-[var(--art-text-white-65)] line-clamp-1">
-                  {artwork.artist}
-                </p>
-                <h3 className="mt-1 text-2xl leading-tight font-semibold text-[var(--art-text-inverse)] line-clamp-1">
-                  {artwork.title}
-                </h3>
-                <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--art-text-white-72)]">
-                  <span>{artwork.size}</span>
-                  <span className="h-1 w-1 rounded-full bg-[var(--art-overlay-white-dot)]" />
-                  <span>{artwork.price}</span>
+              <Link href={`painting/${index}`}>
+                <img
+                  src={artwork.image}
+                  alt={`${artwork.title} by ${artwork.artist}`}
+                  loading="lazy"
+                  className="h-auto w-full transition duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-linear-to-b from-[var(--art-overlay-black-05)] via-[var(--art-overlay-black-20)] to-[var(--art-overlay-black-75)]" />
+                <div className="absolute inset-0 flex flex-col justify-end p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:p-4">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[var(--art-text-white-65)] line-clamp-1">
+                    {artwork.artist}
+                  </p>
+                  <h3 className="mt-1 text-2xl leading-tight font-semibold text-[var(--art-text-inverse)] line-clamp-1">
+                    {artwork.title}
+                  </h3>
+                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--art-text-white-72)]">
+                    <span>{artwork.size}</span>
+                    <span className="h-1 w-1 rounded-full bg-[var(--art-overlay-white-dot)]" />
+                    <span>{artwork.price}</span>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </article>
           ))}
         </div>

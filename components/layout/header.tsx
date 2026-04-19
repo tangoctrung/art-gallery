@@ -3,6 +3,8 @@ import { Menu, Search, X } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import DropdownLanguages from '../dropdown-languages'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const NAV_ITEMS = [
   { href: "#spotlight", label: "Tranh vẽ" },
@@ -14,6 +16,7 @@ function Header() {
   const [isScroll, setIsScroll] = useState<boolean>(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false)
   const isMounter = useRef<any>(null)
+  const router = useRouter();
 
   const onScroll = () => {
     if (window.scrollY > 50) {
@@ -45,8 +48,11 @@ function Header() {
     <>
       <header className={`sticky top-0 z-50 w-full px-[5%] ${isScroll ? "bg-(--art-overlay-header) backdrop-blur-2xl" : "bg-(--art-surface-dark)"}`}>
         <div className="mx-auto flex max-w-480 items-center gap-10 py-3">
-          <a
+          <Link
             href="/"
+            onClick={() => {
+              router.push("/")
+            }}
             aria-label="ArtGallery"
             className="shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--art-accent)]"
           >
@@ -57,7 +63,7 @@ function Header() {
               height={40}
               className="h-8 w-auto object-contain md:h-9"
             />
-          </a>
+          </Link>
           <nav className="hidden items-center gap-7 text-base font-semibold text-[var(--art-text-white-78)] lg:flex">
             {NAV_ITEMS.map((item) => (
               <a

@@ -2,6 +2,7 @@
 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 import React, { useState } from 'react'
 
 
@@ -65,13 +66,13 @@ function Spotlight() {
                         Tác giả: {slide.artist}
                       </p>
                       <div className="mt-6 flex flex-wrap gap-3">
-                        <a
-                          href="#collections"
+                        <Link
+                          href={`painting/1234`}
                           className="inline-flex items-center gap-2 rounded-full bg-[var(--art-accent)] px-5 py-3 text-sm font-medium text-[var(--art-text-inverse)] transition hover:bg-[var(--art-accent-hover)]"
                         >
                           Xem
                           <ArrowRight className="h-4 w-4" />
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </article>

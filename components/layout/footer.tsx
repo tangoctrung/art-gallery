@@ -1,6 +1,12 @@
 import { Mail, Phone } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react'
+import Facebook from '../icons/social/facebook';
+import Instagram from '../icons/social/instagram';
+import Tiktok from '../icons/social/tiktok';
+import Zalo from '../icons/social/zalo';
+import Youtube from '../icons/social/youtube';
 
 const footerLinks = [
   "Chính sách mua tranh",
@@ -11,7 +17,7 @@ const footerLinks = [
 
 function Footer() {
   return (
-    <footer className="bg-[var(--art-surface-dark)] text-[var(--art-text-inverse)] px-4 py-10 md:px-8">
+    <footer className="bg-[var(--art-surface-dark)] text-[var(--art-text-inverse)] px-[5%] py-10">
       <div className="mx-auto flex max-w-[1920px] flex-col gap-6 border-t border-[var(--art-border-dark-soft)] pt-8 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <a
@@ -52,6 +58,24 @@ function Footer() {
           <div className="flex items-center gap-3">
             <Mail className="h-4 w-4 text-[var(--art-accent-hover)]" />
             <span>hello@artgallery.vn</span>
+          </div>
+          <div className='mt-4 flex items-center gap-4'>
+            <Link href={"https://www.facebook.com/"}>
+              <Facebook className='w-10 h-10' />
+            </Link>
+            <Link href={"https://www.instagram.com/"}>
+              <Instagram className='w-10 h-10' />
+            </Link>
+            <Link href={"https://www.tiktok.com/"}>
+              <Tiktok className='w-10 h-10' />
+            </Link>
+            <Link href={"https://www.youtube.com/"}>
+              <Youtube className='w-10 h-10' />
+            </Link>
+            <Link href={"https://zalo.me/vi/"}>
+              <Zalo className='w-10 h-10' />
+            </Link>
+
           </div>
         </div>
       </div>
