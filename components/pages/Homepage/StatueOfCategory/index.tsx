@@ -1,5 +1,7 @@
 "use client"
 
+import { useRouter } from "next/navigation";
+
 const statues = [
   {
     category: "Tượng chân dung",
@@ -44,12 +46,13 @@ const statues = [
 ];
 
 function StatueOfCategory() {
+  const router = useRouter();
   return (
     <section
       id="statue-collections"
       className="lg:py-24 py-10 md:py-20 px-[5%]"
     >
-      <div className="mx-auto max-w-480">
+      <div className="mx-auto max-w-350">
         <div className="max-w-full mb-10 flex flex-col items-center">
           <h2 className="text-4xl font-semibold text-center tracking-[-0.04em] mb-4">
             Thể loại tượng
@@ -79,6 +82,18 @@ function StatueOfCategory() {
               </div>
             </article>
           ))}
+        </div>
+
+        <div className="w-full flex justify-center mt-6">
+          <button
+            type="button"
+            onClick={() => {
+              router.push("/statues-category");
+            }}
+            className={`min-w-[200px] w-fit text-center gap-2 shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 bg-(--art-accent) hover:bg-(--art-accent-hover) text-sm transition text-white`}
+          >
+            Xem tất cả
+          </button>
         </div>
       </div>
     </section>

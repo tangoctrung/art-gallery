@@ -28,7 +28,7 @@ function Introduction() {
   return (
     <section className="px-[5%] py-10 md:py-20 border-b border-(--art-border-dark-soft) bg-(--art-surface-light)">
       <h3 className='text-4xl font-semibold tracking-[-0.04em] mb-10 text-center'>Tại sao chọn ArtGallery</h3>
-      <div className="mx-auto grid max-w-480 gap-6 md:grid-cols-3">
+      <div className="mx-auto grid max-w-350 gap-6 md:grid-cols-3">
         {dataIntro.map((item) => (
           <div
             key={item.id.toString() + item.title}

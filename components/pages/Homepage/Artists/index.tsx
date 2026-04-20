@@ -2,6 +2,7 @@
 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const artists = [
   {
@@ -49,9 +50,10 @@ const artists = [
 ];
 
 function Artists() {
+  const router = useRouter();
   return (
     <section id="artists" className="bg-[var(--art-surface-dark)] text-[var(--art-text-inverse)] lg:py-24 py-10 md:py-20 px-[5%]">
-      <div className="mx-auto max-w-480">
+      <div className="mx-auto max-w-350">
         <div className="mb-10 items-center flex flex-col">
           <h2 className="text-4xl font-semibold text-center tracking-[-0.04em] mb-4">
             Một số họa sĩ, nhà điêu khắc nổi bật.
@@ -110,6 +112,18 @@ function Artists() {
             className="right-3 h-11 w-11 border border-[var(--art-border-light)] bg-[var(--art-surface-dark-soft)]/90 text-[var(--art-text-inverse)] shadow-[0_18px_40px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:bg-[var(--art-surface-white)] hover:text-[var(--art-text-primary)] disabled:pointer-events-none disabled:opacity-35 md:right-4"
           />
         </Carousel>
+
+        <div className="w-full flex justify-center mt-6">
+          <button
+            type="button"
+            onClick={() => {
+              router.push("/artists");
+            }}
+            className={`min-w-[200px] w-fit text-center gap-2 shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 bg-(--art-accent) hover:bg-(--art-accent-hover) text-sm transition text-white`}
+          >
+            Xem tất cả
+          </button>
+        </div>
       </div>
     </section>
   )

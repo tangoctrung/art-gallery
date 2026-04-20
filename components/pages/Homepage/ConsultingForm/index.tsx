@@ -8,7 +8,7 @@ function ConsultingForm() {
       id="consultation"
       className="bg-[var(--art-surface-light)] lg:py-24 py-10 md:py-20 px-[5%]"
     >
-      <div className="mx-auto grid max-w-480 gap-8 lg:grid-cols-[0.92fr_1.08fr]">
+      <div className="mx-auto grid max-w-350 gap-8 lg:grid-cols-[0.92fr_1.08fr]">
         <div className="rounded-xl h-fit bg-[var(--art-surface-dark)] p-8 text-[var(--art-text-inverse)] md:p-10">
           <h2 className="text-4xl font-semibold tracking-[-0.04em] mb-4">
             Nhận tư vấn tranh cho không gian của bạn.

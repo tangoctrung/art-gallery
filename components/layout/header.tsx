@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 const NAV_ITEMS = [
-  { href: "#spotlight", label: "Tranh vẽ" },
-  { href: "#collections", label: "Tượng" },
-  { href: "#artists", label: "Họa sĩ" },
+  { href: "/paintings-category", label: "Tranh vẽ" },
+  { href: "/statues-category", label: "Tượng" },
+  { href: "/artists", label: "Họa sĩ" },
 ]
 
 function Header() {
@@ -47,7 +47,7 @@ function Header() {
   return (
     <>
       <header className={`sticky top-0 z-50 w-full px-[5%] ${isScroll ? "bg-(--art-overlay-header) backdrop-blur-2xl" : "bg-(--art-surface-dark)"}`}>
-        <div className="mx-auto flex max-w-480 items-center gap-10 py-3">
+        <div className="mx-auto flex max-w-350 items-center gap-10 py-3">
           <Link
             href="/"
             onClick={() => {
@@ -66,13 +66,16 @@ function Header() {
           </Link>
           <nav className="hidden items-center gap-7 text-base font-semibold text-[var(--art-text-white-78)] lg:flex">
             {NAV_ITEMS.map((item) => (
-              <a
+              <Link
                 key={item.href}
+                onClick={() => {
+                  router.push(item.href)
+                }}
                 href={item.href}
                 className="transition hover:text-[var(--art-text-inverse)]"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -135,14 +138,17 @@ function Header() {
 
         <nav className="mt-8 flex flex-col gap-2">
           {NAV_ITEMS.map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
-              onClick={() => setIsDrawerOpen(false)}
+              onClick={() => {
+                setIsDrawerOpen(false);
+                router.push(item.href);
+              }}
               className="rounded-2xl px-4 py-4 text-lg font-semibold text-[var(--art-text-inverse)] transition hover:bg-[var(--art-overlay-white-soft)]"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </aside>

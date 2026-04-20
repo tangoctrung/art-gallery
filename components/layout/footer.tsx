@@ -18,7 +18,7 @@ const footerLinks = [
 function Footer() {
   return (
     <footer className="bg-[var(--art-surface-dark)] text-[var(--art-text-inverse)] px-[5%] py-10">
-      <div className="mx-auto flex max-w-[1920px] flex-col gap-6 border-t border-[var(--art-border-dark-soft)] pt-8 lg:flex-row lg:items-start lg:justify-between">
+      <div className="mx-auto flex max-w-350 flex-col gap-6 border-t border-[var(--art-border-dark-soft)] pt-8 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <a
             href="/"

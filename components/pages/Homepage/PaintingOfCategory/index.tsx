@@ -1,6 +1,8 @@
 "use client"
 
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   startTransition,
   useDeferredValue,
@@ -184,6 +186,7 @@ const artworks = [
 
 function PaintingOfCategory() {
   const categoryScrollerRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
   const dragStateRef = useRef({
     isDragging: false,
     hasMoved: false,
@@ -250,7 +253,7 @@ function PaintingOfCategory() {
       id="collections"
       className="bg-[var(--art-surface-dark)] text-[var(--art-text-inverse)]  py-10 md:py-20 px-[5%]"
     >
-      <div className="mx-auto max-w-480">
+      <div className="mx-auto max-w-350">
         <div className="max-w-full mb-10 flex flex-col items-center">
           <h2 className="text-4xl font-semibold text-center tracking-[-0.04em] mb-4">
             Bức tranh nổi tiếng
@@ -276,8 +279,8 @@ function PaintingOfCategory() {
                   key={category}
                   type="button"
                   onClick={() => handleCategoryClick(category)}
-                  className={`shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 text-sm transition ${isActive
-                    ? "bg-[var(--art-text-primary)] text-[var(--art-text-inverse)]"
+                  className={`shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 text-sm transition font-semibold ${isActive
+                    ? "bg-[var(--art-accent)] text-[var(--art-text-inverse)]"
                     : "border border-[var(--art-border-dark)] bg-[var(--art-surface-white)] text-[var(--art-text-black-72)] hover:border-[var(--art-border-dark-strong)]"
                     }`}
                 >
@@ -285,6 +288,15 @@ function PaintingOfCategory() {
                 </button>
               );
             })}
+            <button
+              type="button"
+              onClick={() => {
+                router.push("/paintings-category");
+              }}
+              className={`flex items-center gap-2 shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 border border-[var(--art-text-white-85)] text-sm transition text-[var(--art-text-inverse)] hover:text-(--art-text-white-85)`}
+            >
+              Xem tất cả
+            </button>
           </div>
         </div>
 
