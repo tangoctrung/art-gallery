@@ -131,7 +131,11 @@ function StatuesCategoryPage() {
   const router = useRouter();
   return (
     <main className="min-h-[calc(100svh-150px)] bg-[var(--art-surface-light)] text-[var(--art-text-primary)]">
-      <section className="bg-black px-[5%] py-14 text-[var(--art-text-inverse)] md:py-20 xl:py-24">
+      <section className="bg-black px-[5%] py-14 text-[var(--art-text-inverse)] md:py-20 xl:py-24 bg-[linear-gradient(135deg,rgba(14,18,24,1)_0%,rgba(26,29,34,0.96)_58%,rgba(34,39,48,0.94)_100%)] px-[5%] py-14 text-[var(--art-text-inverse)]">
+        <div
+          aria-hidden="true"
+          className="absolute inset-y-0 right-0 hidden w-[38vw] bg-[radial-gradient(circle_at_center,rgba(41,151,255,0.22),transparent_62%)] blur-3xl lg:block"
+        />
         <div className="mx-auto grid max-w-350 gap-10 lg:grid-cols-[minmax(0,1.15fr)_380px] lg:items-end">
           <div className="max-w-[760px]">
             <p className="text-xs font-semibold tracking-[0.24em] text-[var(--art-text-white-55)] uppercase">
