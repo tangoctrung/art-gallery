@@ -139,11 +139,23 @@ const motionDelayClasses = [
   "homepage-motion-delay-340",
 ];
 
+const paintingCategoryColumns = paintingCategories.reduce<
+  (typeof paintingCategories)[]
+>((columns, category, index) => {
+  if (index % 2 === 0) {
+    columns.push([category]);
+  } else {
+    columns[columns.length - 1].push(category);
+  }
+
+  return columns;
+}, []);
+
 function PaintingOfCategory() {
   return (
     <section
       id="collections"
-      className="flex h-full items-center bg-[var(--art-surface-dark)] px-[5%] py-6 text-[var(--art-text-inverse)] md:py-10"
+      className="flex h-full items-center bg-[var(--art-surface-dark)] px-[5%] py-6 text-[var(--art-text-inverse)] md:py-8"
     >
       <div className="mx-auto w-full max-w-[1920px]">
         <div className="mb-5 flex max-w-full flex-col items-center md:mb-7">
@@ -157,36 +169,47 @@ function PaintingOfCategory() {
           opts={{
             align: "start",
             loop: false,
+            slidesToScroll: 1,
           }}
         >
-          <CarouselContent className="items-stretch">
-            {paintingCategories.map((category, index) => (
+          <CarouselContent className="items-stretch sm:-ml-5">
+            {paintingCategoryColumns.map((column, columnIndex) => (
               <CarouselItem
-                key={category.name}
-                className="basis-1/1 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5"
+                key={column[0].name}
+                className="basis-full sm:basis-1/2 sm:pl-5 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5"
               >
-                <Link
-                  href={`/paintings-category?category=${encodeURIComponent(category.name)}`}
-                  className={`homepage-motion homepage-motion-up ${motionDelayClasses[index % motionDelayClasses.length]} group relative flex h-[60svh] min-h-80 overflow-hidden rounded-lg bg-black shadow-[0_22px_58px_rgba(0,0,0,0.28)]`}
-                >
-                  <img
-                    src={category.image}
-                    alt={`Minh hoạ thể loại tranh ${category.name}`}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-b from-[var(--art-overlay-black-05)] via-[var(--art-overlay-black-30)] to-[var(--art-overlay-black-80)]" />
-                  <div className="relative z-10 mt-auto flex min-h-52 w-full flex-col justify-end p-5 md:p-6">
-                    <h3 className="mt-3 text-xl font-semibold leading-tight text-[var(--art-text-inverse)]">
-                      {category.name}
-                    </h3>
-                  </div>
-                </Link>
+                <div className="grid h-full grid-rows-2 gap-4">
+                  {column.map((category, categoryIndex) => {
+                    const itemIndex = columnIndex * 2 + categoryIndex;
+
+                    return (
+                      <Link
+                        key={category.name}
+                        href={`/paintings-category/${category.name}`}
+                        className={`homepage-motion homepage-motion-up ${motionDelayClasses[itemIndex % motionDelayClasses.length]} group relative flex h-[40svh] min-h-44 overflow-hidden rounded-lg bg-black shadow-[0_22px_58px_rgba(0,0,0,0.28)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_72px_rgba(0,0,0,0.36)]`}
+                      >
+                        <img
+                          src={category.image}
+                          alt={`Minh hoạ thể loại tranh ${category.name}`}
+                          loading="lazy"
+                          className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-linear-to-b from-[var(--art-overlay-black-05)] via-[var(--art-overlay-black-30)] to-[var(--art-overlay-black-80)]" />
+                        <div className="relative z-10 mt-auto flex min-h-32 w-full flex-col justify-end p-5 md:p-6">
+                          <span className="mb-3 h-px w-14 bg-[var(--art-accent)]/80" />
+                          <h3 className="text-lg font-semibold leading-tight text-[var(--art-text-inverse)] md:text-xl">
+                            {category.name}
+                          </h3>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-3 h-11 w-11 border border-[var(--art-border-light)] bg-[var(--art-surface-dark-soft)]/90 text-[var(--art-text-inverse)] shadow-[0_18px_40px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:bg-[var(--art-surface-white)] hover:text-[var(--art-text-primary)] disabled:pointer-events-none disabled:opacity-35 md:left-4" />
-          <CarouselNext className="right-3 h-11 w-11 border border-[var(--art-border-light)] bg-[var(--art-surface-dark-soft)]/90 text-[var(--art-text-inverse)] shadow-[0_18px_40px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:bg-[var(--art-surface-white)] hover:text-[var(--art-text-primary)] disabled:pointer-events-none disabled:opacity-35 md:right-4" />
+          <CarouselPrevious className="z-20 -left-2 h-14 w-14 border border-[var(--art-border-light)] bg-[var(--art-surface-dark-soft)]/95 text-[var(--art-text-inverse)] shadow-[0_20px_48px_rgba(0,0,0,0.34)] backdrop-blur-md transition hover:scale-105 hover:bg-[var(--art-surface-white)] hover:text-[var(--art-text-primary)] focus-visible:ring-2 focus-visible:ring-[var(--art-accent)] disabled:pointer-events-none disabled:opacity-35 md:-left-7 lg:-left-10 xl:-left-12 [&_svg]:h-6 [&_svg]:w-6" />
+          <CarouselNext className="z-20 -right-2 h-14 w-14 border border-[var(--art-border-light)] bg-[var(--art-surface-dark-soft)]/95 text-[var(--art-text-inverse)] shadow-[0_20px_48px_rgba(0,0,0,0.34)] backdrop-blur-md transition hover:scale-105 hover:bg-[var(--art-surface-white)] hover:text-[var(--art-text-primary)] focus-visible:ring-2 focus-visible:ring-[var(--art-accent)] disabled:pointer-events-none disabled:opacity-35 md:-right-7 lg:-right-10 xl:-right-12 [&_svg]:h-6 [&_svg]:w-6" />
         </Carousel>
       </div>
     </section>

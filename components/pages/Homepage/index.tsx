@@ -5,6 +5,7 @@ import Spotlight from "./Spotlight";
 import PaintingOfCategory from "./PaintingOfCategory";
 import StatueOfCategory from "./StatueOfCategory";
 import Artists from "./Artists";
+import Contacts from "./Contacts";
 
 const scrollLockDuration = 760;
 
@@ -14,6 +15,7 @@ const homepageSections = [
   { id: "collections", component: <PaintingOfCategory /> },
   { id: "statue-collections", component: <StatueOfCategory /> },
   { id: "artists", component: <Artists /> },
+  { id: "contacts", component: <Contacts /> },
   // { id: "consultation", component: <ConsultingForm /> },
 ];
 
