@@ -1,7 +1,7 @@
 import React from 'react'
-import Header from './header'
-import Footer from './footer';
-import FloatButton from './float-button';
+// import Header from './header'
+// import Footer from './footer';
+// import FloatButton from './float-button';
 
 function LayoutMain({
   children,
@@ -9,13 +9,13 @@ function LayoutMain({
   children: React.ReactNode;
 }>) {
   return (
-    <article className='w-full bg-black min-h-svh'>
-      <Header />
+    <article className='w-full bg-black h-screen'>
+      {/* <Header /> */}
       <div>
         {children}
       </div>
-      <FloatButton />
-      <Footer />
+      {/* <FloatButton />
+      <Footer /> */}
     </article>
   )
 }
