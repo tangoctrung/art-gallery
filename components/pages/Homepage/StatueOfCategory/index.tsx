@@ -209,47 +209,48 @@ function StatueOfCategory() {
         >
           <CarouselContent className="items-stretch">
             {statueCategories.map((statue, index) => {
-              return (
-                <CarouselItem
-                  key={statue.category}
-                  className="basis-1/1 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5"
-                >
-                  <Link
-                    href={`/statues-category?category=${encodeURIComponent(statue.category)}`}
-                    className={`homepage-motion homepage-motion-up ${motionDelayClasses[index % motionDelayClasses.length]} group relative flex h-[40svh] min-h-80 overflow-hidden rounded-lg bg-black shadow-[var(--art-shadow-card)]`}
+              if (index)
+                return (
+                  <CarouselItem
+                    key={statue.category}
+                    className="basis-1/1 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5"
                   >
-                    <img
-                      src={statue.image}
-                      alt={`Minh hoạ thể loại ${statue.category}`}
-                      loading="lazy"
-                      className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-linear-to-b from-[var(--art-overlay-black-05)] via-[var(--art-overlay-black-30)] to-[var(--art-overlay-black-80)]" />
-                    <div className="relative z-10 mt-auto flex min-h-52 w-full flex-col justify-end p-5 md:p-6">
-                      <h3 className="mt-3 text-xl font-semibold leading-tight text-[var(--art-text-inverse)]">
-                        {statue.category}
-                      </h3>
-                    </div>
-                  </Link>
-                  <Link
-                    href={`/statues-category?category=${encodeURIComponent(statue.category)}`}
-                    className={`mt-4 homepage-motion homepage-motion-up ${motionDelayClasses[index % motionDelayClasses.length]} group relative flex h-[40svh] min-h-80 overflow-hidden rounded-lg bg-black shadow-[var(--art-shadow-card)]`}
-                  >
-                    <img
-                      src={statue.image}
-                      alt={`Minh hoạ thể loại ${statue.category}`}
-                      loading="lazy"
-                      className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-linear-to-b from-[var(--art-overlay-black-05)] via-[var(--art-overlay-black-30)] to-[var(--art-overlay-black-80)]" />
-                    <div className="relative z-10 mt-auto flex min-h-52 w-full flex-col justify-end p-5 md:p-6">
-                      <h3 className="mt-3 text-xl font-semibold leading-tight text-[var(--art-text-inverse)]">
-                        {statue.category}
-                      </h3>
-                    </div>
-                  </Link>
-                </CarouselItem>
-              )
+                    <Link
+                      href={`/statues-category?category=${encodeURIComponent(statue.category)}`}
+                      className={`homepage-motion homepage-motion-up ${motionDelayClasses[index % motionDelayClasses.length]} group relative flex h-[40svh] min-h-80 overflow-hidden rounded-lg bg-black shadow-[var(--art-shadow-card)]`}
+                    >
+                      <img
+                        src={statue.image}
+                        alt={`Minh hoạ thể loại ${statue.category}`}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-linear-to-b from-[var(--art-overlay-black-05)] via-[var(--art-overlay-black-30)] to-[var(--art-overlay-black-80)]" />
+                      <div className="relative z-10 mt-auto flex min-h-52 w-full flex-col justify-end p-5 md:p-6">
+                        <h3 className="mt-3 text-xl font-semibold leading-tight text-[var(--art-text-inverse)]">
+                          {statue.category}
+                        </h3>
+                      </div>
+                    </Link>
+                    <Link
+                      href={`/statues-category?category=${encodeURIComponent(statue.category)}`}
+                      className={`mt-4 homepage-motion homepage-motion-up ${motionDelayClasses[index % motionDelayClasses.length]} group relative flex h-[40svh] min-h-80 overflow-hidden rounded-lg bg-black shadow-[var(--art-shadow-card)]`}
+                    >
+                      <img
+                        src={statue.image}
+                        alt={`Minh hoạ thể loại ${statue.category}`}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-linear-to-b from-[var(--art-overlay-black-05)] via-[var(--art-overlay-black-30)] to-[var(--art-overlay-black-80)]" />
+                      <div className="relative z-10 mt-auto flex min-h-52 w-full flex-col justify-end p-5 md:p-6">
+                        <h3 className="mt-3 text-xl font-semibold leading-tight text-[var(--art-text-inverse)]">
+                          {statue.category}
+                        </h3>
+                      </div>
+                    </Link>
+                  </CarouselItem>
+                )
             })}
           </CarouselContent>
           <CarouselPrevious className="left-3 h-11 w-11 border border-[var(--art-border-light)] bg-[var(--art-surface-dark-soft)]/90 text-[var(--art-text-inverse)] shadow-[0_18px_40px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:bg-[var(--art-surface-white)] hover:text-[var(--art-text-primary)] disabled:pointer-events-none disabled:opacity-35 md:left-4" />
