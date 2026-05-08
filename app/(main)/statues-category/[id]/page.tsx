@@ -63,13 +63,13 @@ const statueSlides: StatueSlide[] = [
     model:
       "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/CesiumMan/glTF-Binary/CesiumMan.glb",
   },
-  {
-    id: "classical-echo",
-    title: "Classical Echo",
-    artist: "Doan Nhat Ha",
-    image:
-      "https://img.freepik.com/free-photo/vertical-shot-bust-philosopher-isolated_181624-23590.jpg",
-  },
+  // {
+  //   id: "classical-echo",
+  //   title: "Classical Echo",
+  //   artist: "Doan Nhat Ha",
+  //   image:
+  //     "https://img.freepik.com/free-photo/vertical-shot-bust-philosopher-isolated_181624-23590.jpg",
+  // },
   {
     id: "damaged-helmet-gltf",
     title: "Damaged Helmet GLTF",
@@ -284,17 +284,18 @@ function ListStatueOfCategory() {
                       />
                     )}
 
-                    <div className="absolute top-4 right-4 z-20 flex flex-col items-end gap-2">
-                      <button
-                        type="button"
-                        onClick={handleOpenPreview}
-                        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(255,255,255,0.18)] bg-[rgba(255,255,255,0.14)] px-4 py-2.5 text-sm text-white shadow-[0_12px_30px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:bg-[rgba(255,255,255,0.24)]"
-                        aria-label={`Zoom ${statue.title}`}
-                      >
-                        <Search className="h-4 w-4" />
-                        {getStatueModelUrl(statue) ? "Xem 3D" : "Zoom"}
-                      </button>
-                    </div>
+                    {!isThreeDModelUrl(statue.image) &&
+                      <div className="absolute top-4 right-4 z-20 flex flex-col items-end gap-2">
+                        <button
+                          type="button"
+                          onClick={handleOpenPreview}
+                          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(255,255,255,0.18)] bg-[rgba(255,255,255,0.14)] px-4 py-2.5 text-sm text-white shadow-[0_12px_30px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:bg-[rgba(255,255,255,0.24)]"
+                          aria-label={`Zoom ${statue.title}`}
+                        >
+                          <Search className="h-4 w-4" />
+                          Zoom
+                        </button>
+                      </div>}
                   </div>
 
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-linear-to-t from-black/85 via-black/30 to-transparent px-[5%] pb-8 pt-20 md:pb-12">
