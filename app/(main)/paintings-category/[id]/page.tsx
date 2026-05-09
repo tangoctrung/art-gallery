@@ -242,17 +242,17 @@ function ListPaintingOfCategory() {
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-linear-to-t from-black/85 via-black/30 to-transparent px-[5%] pb-8 pt-20 md:pb-12">
                     <div className="mx-auto flex max-w-[1920px] flex-col gap-3">
                       <h1
-                        className={`max-w-[12ch] text-3xl font-semibold tracking-[-0.04em] transition-all duration-700 ease-out md:leading-[1.07] ${painting.id === currentPainting.id
-                            ? "translate-y-0 scale-100 opacity-100 delay-100"
-                            : "translate-y-10 scale-[0.985] opacity-0"
+                        className={`max-w-[80%] sm:max-w-[50%] text-2xl sm:text-3xl  font-semibold tracking-[-0.04em] transition-all duration-700 ease-out md:leading-[1.07] ${painting.id === currentPainting.id
+                          ? "translate-y-0 scale-100 opacity-100 delay-100"
+                          : "translate-y-10 scale-[0.985] opacity-0"
                           }`}
                       >
                         {painting.title}
                       </h1>
                       <p
                         className={`text-[17px] leading-7 tracking-[-0.374px] text-[var(--art-text-white-68)] transition-all duration-700 ease-out ${painting.id === currentPainting.id
-                            ? "translate-y-0 opacity-100 delay-200"
-                            : "translate-y-6 opacity-0"
+                          ? "translate-y-0 opacity-100 delay-200"
+                          : "translate-y-6 opacity-0"
                           }`}
                       >
                         Tác giả: {painting.artist}
@@ -260,8 +260,8 @@ function ListPaintingOfCategory() {
                       <Link
                         href={`/painting/${painting.id}`}
                         className={`pointer-events-auto inline-flex items-center gap-2 text-sm text-[var(--art-accent-hover)] transition-all duration-700 ease-out hover:underline ${painting.id === currentPainting.id
-                            ? "translate-y-0 opacity-100 delay-300"
-                            : "translate-y-6 opacity-0"
+                          ? "translate-y-0 opacity-100 delay-300"
+                          : "translate-y-6 opacity-0"
                           }`}
                       >
                         Xem chi tiết
