@@ -8,6 +8,7 @@ import Artists from "./Artists";
 import Contacts from "./Contacts";
 
 const scrollLockDuration = 760;
+const swipeThreshold = 48;
 
 const homepageSections = [
   { id: "spotlight", component: <Spotlight /> },
@@ -70,6 +71,11 @@ function Homepage() {
   const scrollerRef = useRef<HTMLElement | null>(null);
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<number | null>(null);
+  const touchStateRef = useRef({
+    startY: 0,
+    startX: 0,
+    isTracking: false,
+  });
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
 
   const scrollToSection = useCallback(
@@ -145,6 +151,60 @@ function Homepage() {
     [scrollToSection],
   );
 
+  const handleTouchStart = useCallback((event: TouchEvent) => {
+    const touch = event.touches[0];
+
+    if (!touch) {
+      return;
+    }
+
+    touchStateRef.current = {
+      startY: touch.clientY,
+      startX: touch.clientX,
+      isTracking: true,
+    };
+  }, []);
+
+  const handleTouchEnd = useCallback(
+    (event: TouchEvent) => {
+      const scroller = scrollerRef.current;
+      const touchState = touchStateRef.current;
+      const touch = event.changedTouches[0];
+
+      if (!scroller || !touchState.isTracking || !touch) {
+        touchStateRef.current.isTracking = false;
+        return;
+      }
+
+      touchStateRef.current.isTracking = false;
+
+      if (isScrollingRef.current) {
+        return;
+      }
+
+      const deltaY = touch.clientY - touchState.startY;
+      const deltaX = touch.clientX - touchState.startX;
+
+      if (
+        Math.abs(deltaY) < swipeThreshold ||
+        Math.abs(deltaY) <= Math.abs(deltaX)
+      ) {
+        return;
+      }
+
+      const currentIndex = Math.round(scroller.scrollTop / scroller.clientHeight);
+      const direction = deltaY < 0 ? 1 : -1;
+      const targetIndex = currentIndex + direction;
+
+      if (targetIndex < 0 || targetIndex >= homepageSections.length) {
+        return;
+      }
+
+      scrollToSection(targetIndex);
+    },
+    [scrollToSection],
+  );
+
   useEffect(() => {
     const scroller = scrollerRef.current;
 
@@ -153,11 +213,15 @@ function Homepage() {
     }
 
     scroller.addEventListener("wheel", handleWheel, { passive: false });
+    scroller.addEventListener("touchstart", handleTouchStart, { passive: true });
+    scroller.addEventListener("touchend", handleTouchEnd, { passive: true });
 
     return () => {
       scroller.removeEventListener("wheel", handleWheel);
+      scroller.removeEventListener("touchstart", handleTouchStart);
+      scroller.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [handleWheel]);
+  }, [handleTouchEnd, handleTouchStart, handleWheel]);
 
   useEffect(() => {
     const sectionIndex = getSectionIndexFromHash();
@@ -183,7 +247,7 @@ function Homepage() {
   return (
     <main
       ref={scrollerRef}
-      className="h-svh overflow-y-hidden bg-(--art-surface-light) text-(--art-text-primary) overscroll-y-contain"
+      className="h-svh overflow-y-hidden bg-(--art-surface-light) text-(--art-text-primary) overscroll-y-contain touch-pan-y"
     >
       {homepageSections.map((section, index) => (
         <div
