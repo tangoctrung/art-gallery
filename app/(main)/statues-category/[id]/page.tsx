@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Minus, Plus, Search, X } from "lucide-react";
 
@@ -14,34 +15,67 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-const statueSlides = [
+function ThreeStatueViewerLoading() {
+  return (
+    <div className="h-full min-h-[420px] w-full animate-pulse rounded-[6px] bg-white/8" />
+  );
+}
+
+const ThreeStatueModalViewer = dynamic(
+  () => import("@/components/ui/three-statue-modal-viewer"),
   {
-    id: "marble-contemplation",
-    title: "Marble Contemplation",
-    artist: "Le Quang Minh",
-    image:
-      "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?auto=format&fit=crop&w=1600&q=80",
+    ssr: false,
+    loading: ThreeStatueViewerLoading,
   },
+);
+
+type StatueSlide = {
+  id: string;
+  title: string;
+  artist: string;
+  image: string;
+  model?: string;
+};
+
+function isThreeDModelUrl(url?: string) {
+  return /\.(glb|gltf)(?:[?#]|$)/i.test(url ?? "");
+}
+
+function getStatueModelUrl(statue: StatueSlide) {
+  if (isThreeDModelUrl(statue.model)) {
+    return statue.model;
+  }
+
+  if (isThreeDModelUrl(statue.image)) {
+    return statue.image;
+  }
+
+  return undefined;
+}
+
+const statueSlides: StatueSlide[] = [
   {
-    id: "bronze-silhouette",
-    title: "Bronze Silhouette",
-    artist: "Tran Gia Bao",
+    id: "cesium-man-3d",
+    title: "Cesium Man 3D",
+    artist: "Khronos Sample Assets",
     image:
-      "https://images.unsplash.com/photo-1544411047-c491e34a24e0?auto=format&fit=crop&w=1600&q=80",
+      "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/CesiumMan/glTF-Binary/CesiumMan.glb",
+    model:
+      "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/CesiumMan/glTF-Binary/CesiumMan.glb",
   },
+  // {
+  //   id: "classical-echo",
+  //   title: "Classical Echo",
+  //   artist: "Doan Nhat Ha",
+  //   image:
+  //     "https://img.freepik.com/free-photo/vertical-shot-bust-philosopher-isolated_181624-23590.jpg",
+  // },
   {
-    id: "stone-guardian",
-    title: "Stone Guardian",
-    artist: "Nguyen Hoai Son",
+    id: "damaged-helmet-gltf",
+    title: "Damaged Helmet GLTF",
+    artist: "Khronos Sample Assets",
     image:
-      "https://images.unsplash.com/photo-1579783483458-83d02161294e?auto=format&fit=crop&w=1600&q=80",
-  },
-  {
-    id: "classical-echo",
-    title: "Classical Echo",
-    artist: "Doan Nhat Ha",
-    image:
-      "https://img.freepik.com/free-photo/vertical-shot-bust-philosopher-isolated_181624-23590.jpg",
+      "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/DamagedHelmet/glTF/DamagedHelmet.gltf",
   },
 ];
 
@@ -100,6 +134,7 @@ function ListStatueOfCategory() {
   }, [carouselApi]);
 
   const currentStatue = statueSlides[activeIndex] ?? statueSlides[0];
+  const currentStatueModelUrl = getStatueModelUrl(currentStatue);
 
   const handleOpenPreview = () => {
     setZoomLevel(1);
@@ -119,7 +154,7 @@ function ListStatueOfCategory() {
 
   const handleZoomOut = () => {
     setZoomLevel((current) => {
-      const nextZoom = Math.max(current - 0.25, 0.75);
+      const nextZoom = Math.max(current - 0.25, 1);
 
       if (nextZoom <= 1) {
         setImageOffset({ x: 0, y: 0 });
@@ -130,6 +165,10 @@ function ListStatueOfCategory() {
   };
 
   const handlePreviewWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    if (currentStatueModelUrl) {
+      return;
+    }
+
     event.preventDefault();
 
     if (event.deltaY < 0) {
@@ -138,7 +177,7 @@ function ListStatueOfCategory() {
     }
 
     setZoomLevel((current) => {
-      const nextZoom = Math.max(current - 0.2, 0.75);
+      const nextZoom = Math.max(current - 0.2, 1);
 
       if (nextZoom <= 1) {
         setImageOffset({ x: 0, y: 0 });
@@ -151,7 +190,7 @@ function ListStatueOfCategory() {
   const handlePreviewPointerDown = (
     event: React.PointerEvent<HTMLDivElement>,
   ) => {
-    if (zoomLevel <= 1) {
+    if (currentStatueModelUrl || zoomLevel <= 1) {
       return;
     }
 
@@ -171,7 +210,7 @@ function ListStatueOfCategory() {
   ) => {
     const dragState = dragStateRef.current;
 
-    if (!dragState.isDragging || zoomLevel <= 1) {
+    if (currentStatueModelUrl || !dragState.isDragging || zoomLevel <= 1) {
       return;
     }
 
@@ -213,46 +252,66 @@ function ListStatueOfCategory() {
                 <article className="relative flex h-svh w-full items-center justify-center overflow-hidden bg-black px-[5%] py-20">
                   <div
                     className={`relative z-10 flex h-full w-full items-center justify-center transition-all duration-700 ease-out ${statue.id === currentStatue.id
-                        ? "translate-y-0 opacity-100"
-                        : "translate-y-4 opacity-65"
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-4 opacity-65"
                       }`}
                   >
-                    <img
-                      src={statue.image}
-                      alt={statue.title}
-                      className={`max-h-full max-w-full object-contain transition-all duration-[900ms] ease-out ${statue.id === currentStatue.id
+                    {isThreeDModelUrl(statue.image) ? (
+                      <div
+                        className={`flex h-[58svh] min-h-[280px] w-[88vw] max-w-[1120px] max-h-[660px] items-center justify-center rounded-[6px] border border-white/12 bg-white/8 text-sm text-white/62 transition-all duration-[900ms] ease-out md:h-[64svh] ${statue.id === currentStatue.id
                           ? "translate-x-0 scale-100"
                           : "translate-x-6 scale-[0.985]"
-                        }`}
-                    />
-
-                    <div className="absolute top-4 right-4 z-20 flex flex-col items-end gap-2">
-                      <button
-                        type="button"
-                        onClick={handleOpenPreview}
-                        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(255,255,255,0.18)] bg-[rgba(255,255,255,0.14)] px-4 py-2.5 text-sm text-white shadow-[0_12px_30px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:bg-[rgba(255,255,255,0.24)]"
-                        aria-label={`Zoom ${statue.title}`}
+                          }`}
                       >
-                        <Search className="h-4 w-4" />
-                        Zoom
-                      </button>
-                    </div>
+                        <button
+                          type="button"
+                          onClick={handleOpenPreview}
+                          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(255,255,255,0.18)] bg-[rgba(255,255,255,0.14)] px-4 py-2.5 text-sm text-white shadow-[0_12px_30px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:bg-[rgba(255,255,255,0.24)]"
+                          aria-label={`Zoom ${statue.title}`}
+                        >
+                          <Search className="h-4 w-4" />
+                          {getStatueModelUrl(statue) ? "Xem 3D" : "Zoom"}
+                        </button>
+                      </div>
+                    ) : (
+                      <img
+                        src={statue.image}
+                        alt={statue.title}
+                        className={`max-h-full max-w-full object-contain transition-all duration-[900ms] ease-out ${statue.id === currentStatue.id
+                          ? "translate-x-0 scale-100"
+                          : "translate-x-6 scale-[0.985]"
+                          }`}
+                      />
+                    )}
+
+                    {!isThreeDModelUrl(statue.image) &&
+                      <div className="absolute top-4 right-4 z-20 flex flex-col items-end gap-2">
+                        <button
+                          type="button"
+                          onClick={handleOpenPreview}
+                          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(255,255,255,0.18)] bg-[rgba(255,255,255,0.14)] px-4 py-2.5 text-sm text-white shadow-[0_12px_30px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:bg-[rgba(255,255,255,0.24)]"
+                          aria-label={`Zoom ${statue.title}`}
+                        >
+                          <Search className="h-4 w-4" />
+                          Zoom
+                        </button>
+                      </div>}
                   </div>
 
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-linear-to-t from-black/85 via-black/30 to-transparent px-[5%] pb-8 pt-20 md:pb-12">
                     <div className="mx-auto flex max-w-[1920px] flex-col gap-3">
                       <h1
                         className={`max-w-[12ch] text-3xl font-semibold tracking-[-0.04em] transition-all duration-700 ease-out md:leading-[1.07] ${statue.id === currentStatue.id
-                            ? "translate-y-0 scale-100 opacity-100 delay-100"
-                            : "translate-y-10 scale-[0.985] opacity-0"
+                          ? "translate-y-0 scale-100 opacity-100 delay-100"
+                          : "translate-y-10 scale-[0.985] opacity-0"
                           }`}
                       >
                         {statue.title}
                       </h1>
                       <p
                         className={`text-[17px] leading-7 tracking-[-0.374px] text-[var(--art-text-white-68)] transition-all duration-700 ease-out ${statue.id === currentStatue.id
-                            ? "translate-y-0 opacity-100 delay-200"
-                            : "translate-y-6 opacity-0"
+                          ? "translate-y-0 opacity-100 delay-200"
+                          : "translate-y-6 opacity-0"
                           }`}
                       >
                         Nhà điêu khắc: {statue.artist}
@@ -260,8 +319,8 @@ function ListStatueOfCategory() {
                       <Link
                         href={`/painting/${statue.id}`}
                         className={`pointer-events-auto inline-flex items-center gap-2 text-sm text-[var(--art-accent-hover)] transition-all duration-700 ease-out hover:underline ${statue.id === currentStatue.id
-                            ? "translate-y-0 opacity-100 delay-300"
-                            : "translate-y-6 opacity-0"
+                          ? "translate-y-0 opacity-100 delay-300"
+                          : "translate-y-6 opacity-0"
                           }`}
                       >
                         Xem chi tiết
@@ -281,33 +340,45 @@ function ListStatueOfCategory() {
 
       {isPreviewOpen ? (
         <div
-          className="fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(0,0,0,0.92)] px-4 py-6 backdrop-blur-sm"
+          className="fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(0,0,0,0.94)] px-4 py-6 backdrop-blur-sm"
           onClick={handleClosePreview}
         >
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex justify-end bg-[linear-gradient(180deg,rgba(0,0,0,0.48)_0%,rgba(0,0,0,0)_100%)] px-4 py-4 md:px-6 md:py-6">
-            <div className="pointer-events-auto flex items-center gap-2">
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleZoomOut();
-                }}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,255,255,0.14)] text-white transition hover:bg-[rgba(255,255,255,0.22)]"
-                aria-label="Thu nhỏ ảnh"
-              >
-                <Minus className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleZoomIn();
-                }}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,255,255,0.14)] text-white transition hover:bg-[rgba(255,255,255,0.22)]"
-                aria-label="Phóng to ảnh"
-              >
-                <Plus className="h-5 w-5" />
-              </button>
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-4 bg-[linear-gradient(180deg,rgba(0,0,0,0.62)_0%,rgba(0,0,0,0)_100%)] px-4 py-4 md:px-6 md:py-6">
+            <div className="min-w-0 text-white">
+              <p className="truncate text-sm text-white/58">
+                {currentStatue.artist}
+              </p>
+              <h2 className="truncate text-xl font-semibold tracking-[-0.03em]">
+                {currentStatue.title}
+              </h2>
+            </div>
+            <div className="pointer-events-auto flex shrink-0 items-center gap-2">
+              {!currentStatueModelUrl ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleZoomOut();
+                    }}
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,255,255,0.14)] text-white transition hover:bg-[rgba(255,255,255,0.22)]"
+                    aria-label="Thu nhỏ ảnh"
+                  >
+                    <Minus className="h-5 w-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleZoomIn();
+                    }}
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,255,255,0.14)] text-white transition hover:bg-[rgba(255,255,255,0.22)]"
+                    aria-label="Phóng to ảnh"
+                  >
+                    <Plus className="h-5 w-5" />
+                  </button>
+                </>
+              ) : null}
               <button
                 type="button"
                 onClick={(event) => {
@@ -322,26 +393,31 @@ function ListStatueOfCategory() {
             </div>
           </div>
 
-          <div className="flex h-full w-full items-center justify-center overflow-hidden">
-            <div
-              className={zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : ""}
-              onClick={(event) => event.stopPropagation()}
-              onWheel={handlePreviewWheel}
-              onPointerDown={handlePreviewPointerDown}
-              onPointerMove={handlePreviewPointerMove}
-              onPointerUp={handlePreviewPointerUp}
-              onPointerCancel={handlePreviewPointerUp}
-            >
+          <div
+            className={`relative h-[min(84svh,820px)] w-[min(94vw,1180px)] overflow-hidden ${!currentStatueModelUrl && zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : ""}`}
+            onClick={(event) => event.stopPropagation()}
+            onWheel={handlePreviewWheel}
+            onPointerDown={handlePreviewPointerDown}
+            onPointerMove={handlePreviewPointerMove}
+            onPointerUp={handlePreviewPointerUp}
+            onPointerCancel={handlePreviewPointerUp}
+          >
+            {currentStatueModelUrl ? (
+              <ThreeStatueModalViewer
+                modelSrc={currentStatueModelUrl}
+                title={currentStatue.title}
+              />
+            ) : (
               <img
                 src={currentStatue.image}
                 alt={currentStatue.title}
-                className="max-h-[calc(100vh-5rem)] max-w-[calc(100vw-2rem)] object-contain transition-transform duration-200 select-none md:max-h-[calc(100vh-6rem)]"
+                className="h-full w-full object-contain transition-transform duration-200 select-none"
                 draggable={false}
                 style={{
                   transform: `translate(${imageOffset.x}px, ${imageOffset.y}px) scale(${zoomLevel})`,
                 }}
               />
-            </div>
+            )}
           </div>
         </div>
       ) : null}
